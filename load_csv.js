@@ -304,4 +304,36 @@ class Coordinator {
   }
 
 
+
 }
+
+
+/*
+const csvFilePath='get_cis_shared.csv'
+const csv=require('csvtojson')
+csv()
+.fromFile(csvFilePath)
+.then((jsonObj)=>{
+    //console.log(jsonObj);
+    /**
+     * [
+     * 	{a:"1", b:"2", c:"3"},
+     * 	{a:"4", b:"5". c:"6"}
+     * ]
+
+})
+
+// Async / await usage
+//const jsonArray= csv().fromFile(csvFilePath);
+
+//var doc = new Document(jsonArray[0])
+console.log(jsonArray.results)
+*/
+
+const fs = require('fs');
+
+let rawdata = fs.readFileSync('get_cis_shared.json');
+let student = JSON.parse(rawdata);
+let doc = new Document(student['0'])
+console.log(Document.all);
+
