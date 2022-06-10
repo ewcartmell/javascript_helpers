@@ -1,4 +1,4 @@
-export class Document {
+window.Document = class Document {
   static all = []
 
   static get_document(DOCUMENT_ID) {
@@ -182,7 +182,7 @@ export class Document {
 }
 
 
-export class Shipment {
+window.Shipment = class Shipment {
   static all = []
   static shipment_ids = Shipment.all.map(shipment => shipment.SHIPMENT_ID)
   static get_shipment(SHIPMENT_ID) {
@@ -228,7 +228,7 @@ export class Shipment {
 }
 
 
-export class Coordinator {
+window.Coordinator = class Coordinator {
   static all = []
 
   static get_selected_site_coordinators(sites = []){
