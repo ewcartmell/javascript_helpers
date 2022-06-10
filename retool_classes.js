@@ -1,4 +1,4 @@
-window.DocumentGH = class Document {
+window.DocumentGH = class DocumentGH {
   static all = []
 
   static get_document(DOCUMENT_ID) {
@@ -129,7 +129,7 @@ window.DocumentGH = class Document {
     //Create Shipment
 		var existing_shipments = DocumentGH.all.map(document => document.SHIPMENT_ID)
     if(!(existing_shipments.includes(document.SHIPMENT_ID))) {
-    	new Shipment(document)
+    	new ShipmentGH(document)
     } else {
       ShipmentGH.get_shipment(document.SHIPMENT_ID).increment_cis()
     }
@@ -182,7 +182,7 @@ window.DocumentGH = class Document {
 }
 
 
-window.ShipmentGH = class Shipment {
+window.ShipmentGH = class ShipmentGH {
   static all = []
   static shipment_ids = ShipmentGH.all.map(shipment => shipment.SHIPMENT_ID)
   static get_shipment(SHIPMENT_ID) {
@@ -228,7 +228,7 @@ window.ShipmentGH = class Shipment {
 }
 
 
-window.CoordinatorGH = class Coordinator {
+window.CoordinatorGH = class CoordinatorGH {
   static all = []
 
   static get_selected_site_coordinators(sites = []){
