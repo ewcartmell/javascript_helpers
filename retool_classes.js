@@ -1,22 +1,22 @@
-window.DocumentGH = class DocumentGH {
+window.Document = class Document {
   static all = []
 
   static get_document(DOCUMENT_ID) {
-    return DocumentGH.all.filter(row => row.DOCUMENT_ID == DOCUMENT_ID)[0]
+    return Document.all.filter(row => row.DOCUMENT_ID == DOCUMENT_ID)[0]
   }
 
   static check_document(DOCUMENT_ID) {
-    return DocumentGH.all.map(row => row.DOCUMENT_ID).includes(DOCUMENT_ID)
+    return Document.all.map(row => row.DOCUMENT_ID).includes(DOCUMENT_ID)
   }
 
   static get_unkeyed_cis(SUBSET) {
-    var arr = SUBSET == null ? DocumentGH.all : SUBSET;
+    var arr = SUBSET == null ? Document.all : SUBSET;
     arr = arr.filter(row => row.GRAPHQL_KEYED_AT == null);
     return arr
   }
 
   static get_bpo_keyable(SUBSET, bpo = false) {
-    var arr = SUBSET == null ? DocumentGH.all : SUBSET;
+    var arr = SUBSET == null ? Document.all : SUBSET;
     if(bpo) {
       arr = arr.filter(row => row.SN == 'Support Ninja');
     }
@@ -24,13 +24,13 @@ window.DocumentGH = class DocumentGH {
   }
 
   static get_unassigned_cis(SUBSET) {
-    var arr = SUBSET == null ? DocumentGH.all : SUBSET;
+    var arr = SUBSET == null ? Document.all : SUBSET;
     arr = arr.filter(row => row.GSHEET_DOCUMENT_ID == null);
     return arr
   }
 
   static get_cart_cis(SUBSET, cart = []) {
-    var arr = SUBSET == null ? DocumentGH.all : SUBSET;
+    var arr = SUBSET == null ? Document.all : SUBSET;
     if(cart.length > 0) {
       arr = arr.filter(row => (cart.includes(row.DOCUMENT_ID)));
     }
@@ -38,7 +38,7 @@ window.DocumentGH = class DocumentGH {
   }
 
   static get_non_cart_cis(SUBSET, cart = []) {
-    var arr = SUBSET == null ? DocumentGH.all : SUBSET;
+    var arr = SUBSET == null ? Document.all : SUBSET;
     if(cart.length > 0) {
       arr = arr.filter(row => !(cart.includes(row.DOCUMENT_ID)));
     }
@@ -46,7 +46,7 @@ window.DocumentGH = class DocumentGH {
   }
 
   static get_client_cis(SUBSET, clients = []) {
-    var arr = SUBSET == null ? DocumentGH.all : SUBSET;
+    var arr = SUBSET == null ? Document.all : SUBSET;
     if(clients.length > 0) {
       arr = arr.filter(row => clients.includes(row.CLIENT));
     }
@@ -55,19 +55,19 @@ window.DocumentGH = class DocumentGH {
 
   static get_filtered_cis(cart = [], team = [], clients = []) {
     var bpo = (team.includes('Support Ninja') || team.includes('Lean Staffing Group'))
-    var arr = DocumentGH.all
+    var arr = Document.all
 
-    arr = DocumentGH.get_non_cart_cis(arr, cart);
-    arr = DocumentGH.get_bpo_keyable(arr, bpo);
-    arr = DocumentGH.get_client_cis(arr, clients);
-    arr = DocumentGH.get_unassigned_cis(arr);
-    arr = DocumentGH.get_unkeyed_cis(arr);
+    arr = Document.get_non_cart_cis(arr, cart);
+    arr = Document.get_bpo_keyable(arr, bpo);
+    arr = Document.get_client_cis(arr, clients);
+    arr = Document.get_unassigned_cis(arr);
+    arr = Document.get_unkeyed_cis(arr);
 
     return arr
   }
 
   static get_documents_status(date_part, cart_documents, assigned_documents) {
-    var docs = DocumentGH.all;
+    var docs = Document.all;
     var results = [];
 
     docs.reduce(function(res, value) {
@@ -127,18 +127,18 @@ window.DocumentGH = class DocumentGH {
     this.GRAPHQL_KEYED_AT = document.keyed_at;
 
     //Create Shipment
-		var existing_shipments = DocumentGH.all.map(document => document.SHIPMENT_ID)
+		var existing_shipments = Document.all.map(document => document.SHIPMENT_ID)
     if(!(existing_shipments.includes(document.SHIPMENT_ID))) {
-    	new ShipmentGH(document)
+    	new Shipment(document)
     } else {
-      ShipmentGH.get_shipment(document.SHIPMENT_ID).increment_cis()
+      Shipment.get_shipment(document.SHIPMENT_ID).increment_cis()
     }
 
-    DocumentGH.all.push(this)
+    Document.all.push(this)
   }
 
   get_shipment() {
-     return ShipmentGH.all.filter(shipment => shipment.SHIPMENT_ID === this.SHIPMENT_ID)[0];
+     return Shipment.all.filter(shipment => shipment.SHIPMENT_ID === this.SHIPMENT_ID)[0];
   }
   get_document_status(cart, assigned) {
     var status = 'Up for Grabs'
@@ -182,22 +182,22 @@ window.DocumentGH = class DocumentGH {
 }
 
 
-window.ShipmentGH = class ShipmentGH {
+window.Shipment = class Shipment {
   static all = []
-  static shipment_ids = ShipmentGH.all.map(shipment => shipment.SHIPMENT_ID)
+  static shipment_ids = Shipment.all.map(shipment => shipment.SHIPMENT_ID)
   static get_shipment(SHIPMENT_ID) {
-    return ShipmentGH.all.filter(row => row.SHIPMENT_ID == SHIPMENT_ID)[0]
+    return Shipment.all.filter(row => row.SHIPMENT_ID == SHIPMENT_ID)[0]
   }
   static check_shipment(SHIPMENT_ID) {
-    return ShipmentGH.all.map(row => row.SHIPMENT_ID).includes(SHIPMENT_ID)
+    return Shipment.all.map(row => row.SHIPMENT_ID).includes(SHIPMENT_ID)
   }
     static sort_shipments(filtered_cis = []) {
     output = [];
     if(filtered_cis.length > 0) {
       var filtered_shipment_ids = filtered_cis.map(row => row.SHIPMENT_ID)
-      output = ShipmentGH.all.filter(row => filtered_shipment_ids.includes(row.SHIPMENT_ID));
+      output = Shipment.all.filter(row => filtered_shipment_ids.includes(row.SHIPMENT_ID));
     } else {
-      output = ShipmentGH.all
+      output = Shipment.all
     }
     output.sort(function(a,b){
       // Turn your strings into dates, and then subtract them
@@ -215,11 +215,11 @@ window.ShipmentGH = class ShipmentGH {
     this.DUE_DATE = shipment.DUE_DATE;
     this.BPO = shipment.SN;
     this.TOTAL_CIS = 1;
-    ShipmentGH.all.push(this)
+    Shipment.all.push(this)
   }
 
   get_documents() {
-     return DocumentGH.all.filter(document => document.SHIPMENT_ID === this.SHIPMENT_ID);
+     return Document.all.filter(document => document.SHIPMENT_ID === this.SHIPMENT_ID);
   }
 
   increment_cis() {
@@ -228,17 +228,17 @@ window.ShipmentGH = class ShipmentGH {
 }
 
 
-window.CoordinatorGH = class CoordinatorGH {
+window.Coordinator = class Coordinator {
   static all = []
 
   static get_selected_site_coordinators(sites = []){
-    return CoordinatorGH.all.filter(coordinator => sites.includes(coordinator.SITE))
+    return Coordinator.all.filter(coordinator => sites.includes(coordinator.SITE))
   }
 
 
   static get_coordinators_assigned_documents(COMPANY) {
 
-    var coordinators = CoordinatorGH.all.filter(c =>
+    var coordinators = Coordinator.all.filter(c =>
       c.TEAM == 'Product Data'
       && COMPANY.includes(c.COMPANY)
       && c.ROLE === 'Execution'
@@ -295,11 +295,11 @@ window.CoordinatorGH = class CoordinatorGH {
     this.ROLE = coordinator['Confirmed Role'];
     this.MANAGER = coordinator['Confirmed Manager'];
     this.COMPANY = coordinator['Confirmed Company'];
-    CoordinatorGH.all.push(this);
+    Coordinator.all.push(this);
   }
 
   get_assigned_documents() {
-    var documents = DocumentGH.all;
+    var documents = Document..all;
     return documents.filter(document => document.GSHEET_ASSIGNED_TO_EMAIL === this.EMAIL);
   }
 
