@@ -1,4 +1,4 @@
-window.Document = class Document {
+window.DocumentGH = class Document {
   static all = []
 
   static get_document(DOCUMENT_ID) {
@@ -159,7 +159,7 @@ window.Document = class Document {
 }
 
 
-window.Shipment = class Shipment {
+window.ShipmentGH = class Shipment {
   static all = []
   static shipment_ids = Shipment.all.map(shipment => shipment.SHIPMENT_ID)
   static get_shipment(SHIPMENT_ID) {
@@ -205,7 +205,7 @@ window.Shipment = class Shipment {
 }
 
 
-window.Coordinator = class Coordinator {
+window.CoordinatorGH = class Coordinator {
   static all = []
 
   static get_selected_site_coordinators(sites = []){
