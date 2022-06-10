@@ -109,8 +109,8 @@ window.DocumentGH = class Document {
     this.FIRST_UPLOADED_BY = document.FIRST_UPLOADED_BY;
     this.FILE_NAME = document.FILE_NAME;
     this.CLIENT = document.COMPANY_NAME;
-    this.ARRIVAL_DATE = moment(document.ARRIVAL_DATE).clone();
-    this.DUE_DATE = moment(document.DUE_DATE).clone();
+    this.ARRIVAL_DATE = new Date(document.ARRIVAL_DATE);
+    this.DUE_DATE = new Date(document.DUE_DATE);
     this.ACTION_TYPE = document.ACTION_TYPE;
     //this.PRODUCTS_FIRST_ENTERED_AT = document.PRODUCTS_FIRST_ENTERED_AT;
 
