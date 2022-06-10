@@ -156,6 +156,34 @@ window.DocumentGH = class Document {
   assign_document(ASSIGNMENT_INFO) {
     Object.assign(this, ASSIGNMENT_INFO);
   }
+
+  get_arrival_date_part(date_part) {
+
+    var year = this.ARRIVAL_DATE.getYear()
+    var month = this.ARRIVAL_DATE.getMonth()
+    var week_day = this.ARRIVAL_DATE.getDate() - this.ARRIVAL_DATE.getDay()
+    var day = this.ARRIVAL_DATE.getDate()
+
+    switch(date_part) {
+      case 'year':
+        // code block
+        return new Date(year, 1, 1);
+        break;
+      case 'month':
+        // code block
+        return new Date(year, month, 1);
+        break;
+      case 'week':
+        // code block
+        return new Date(year, month, week_day);
+        break;
+      default:
+        // code block
+        return new Date(year, month, day);
+
+    }
+  }
+
 }
 
 
